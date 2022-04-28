@@ -6,7 +6,7 @@ import numpy as np
 
 #start by computing the expression
 from sympy import *
-nb=3
+nb=5
 width=4
 X=[i for i in range(-nb,nb)]
 X=[width*i/(nb*2) for  i in X]
