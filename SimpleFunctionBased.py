@@ -6,9 +6,10 @@ import numpy as np
 
 #start by computing the expression
 from sympy import *
-nb=5
-width=4
-X=[i for i in range(-nb,nb)]
+nb=6
+
+width=15
+X=[i for i in range(-nb,nb+1)]
 X=[width*i/(nb*2) for  i in X]
 
 Y=[i*i for i in X]
@@ -29,7 +30,8 @@ NY=[NY[i]/sqrt(NY[i]&NY[i]) for i in range(len(NY))]
 NSX=[-(BSX[1]-BSX[0])^R.z]+[-(BSX[i+1]-BSX[i-1])^R.z for i in range(1,len(X)-1)]+[-(B[len(X)-1]-B[len(X)-2])^R.z]
 #never change the S coefficient below
 S=R.y
-A=width*2*R.y
+A=19*R.y
+
 #
 Exp=[N[i]^(sqrt((A-B[i])&(A-B[i]))*S+A-B[i]) for i in range(len(X))]
 #

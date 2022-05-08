@@ -5,15 +5,15 @@ import numpy as np
 from BezierFunction import *
 #start by computing the expression
 from sympy import *
-nb=15
-deg=4
-width=1.25
+from helperFile import *
+nb=20
+deg=3
+width=1.5
 X=[i for i in range(-nb,nb+1)]
 X=[width*i/(nb) for  i in X]
 BBc0=[i*i*10 for i in range(deg+1)]
 Y=[sum(BBc0[j]*Bezier(j,deg,X[i]) for j in range(len(BBc0))) for i in range(len(X))]
-def indexed_variable(Sym,i):
-    return Symbol(''.join([Sym,'_',str(i)]))
+
 
 SX=[indexed_variable('x',i) for i in range(len(X))]
 BBc=[indexed_variable('c',i) for i in range(deg+1)]
@@ -31,7 +31,7 @@ NSX=[-(BSX[1]-BSX[0])^R.z]+[-(BSX[i+1]-BSX[i-1])^R.z for i in range(1,len(X)-1)]
 
 S=R.y#+1*R.x
 S/=sqrt(S&S)
-concentrationPoint=0.75
+concentrationPoint=0.65
 A=concentrationPoint*R.y#-0*R.x
 
 
@@ -43,7 +43,7 @@ Exp=[N[i]^(sqrt((A-B[i])&(A-B[i]))*S+A-B[i]) for i in range(len(X))]
 ExpX=[NSX[i]^(sqrt((A-BSX[i])&(A-BSX[i]))*S+A-BSX[i]) for i in range(len(X))]
 
 
-MinimisationExp=100*sum([dot(i,i) for i in Exp])+1*sum(i**2 for i in BBc )+5*indexed_variable('c',0)**2
+MinimisationExp=100*sum([dot(i,i) for i in Exp])+1*sum(i**2 for i in BBc )+500*indexed_variable('c',0)**2
 #+20*(indexed_variable('c',1)-concentrationPoint)**2
 
 #compute minimisation
@@ -57,7 +57,7 @@ p=[lambdify(BBc, Exp[i]&R.z) for i in range(len(Exp))]
 def objective(x):
     return [i(*x) for i in p]
 res = minimize(rosen, np.array(BBc0), method='nelder-mead',
-               options={'xatol': 1e-8, 'disp': True,"maxiter": 500})
+               options={'xatol': 1e-8, 'disp': True,"maxiter": 10000})
 # drawing the normals
 BBcSol=res.x
 
